@@ -1,20 +1,22 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useChat } from 'ai/react';
-import { StreamSidebar } from './components/StreamSidebar';
-import { StreamChatInterface } from './components/StreamChatInterface';
-import useUser from '../../hook/useUser';
-import { Message, Conversation } from '../chat/types';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import { useChat } from "ai/react";
+import { StreamSidebar } from "./components/StreamSidebar";
+import { StreamChatInterface } from "./components/StreamChatInterface";
+import useUser from "../../hook/useUser";
+import { Message, Conversation } from "../chat/types";
+import { useToast } from "@/hooks/use-toast";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ChatStreamPage() {
-  const [model, setModel] = useState('openai');
+  const [model, setModel] = useState("openai");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [currentConversationId, setCurrentConversationId] = useState<
+    string | null
+  >(null);
   const { data: user } = useUser();
   const { toast } = useToast();
 
@@ -27,29 +29,26 @@ export default function ChatStreamPage() {
     setMessages,
   } = useChat({
     api: `${API_URL}/chat`,
-    streamProtocol: 'text',
-    body: { 
+    streamProtocol: "text",
+    body: {
       model: model,
       conversationId: currentConversationId,
       userId: user?.id,
       stream: true,
-      db_credentials: {
-        db_user: process.env.NEXT_PUBLIC_DB_USER,
-        db_password: process.env.NEXT_PUBLIC_DB_PASSWORD,
-        db_host: process.env.NEXT_PUBLIC_DB_HOST,
-        db_port: process.env.NEXT_PUBLIC_DB_PORT,
-        db_name: process.env.NEXT_PUBLIC_DB_NAME,
-      },
     },
     onFinish: async (message) => {
       if (currentConversationId && user?.id) {
-        await insertMessage({
-          role: 'assistant',
-          content: message.content,
-        }, currentConversationId, user.id);
-        
+        await insertMessage(
+          {
+            role: "assistant",
+            content: message.content,
+          },
+          currentConversationId,
+          user.id
+        );
+
         await updateConversationTimestamp(currentConversationId, user.id);
-        
+
         fetchConversations();
       }
     },
@@ -71,23 +70,26 @@ export default function ChatStreamPage() {
     if (!user) return;
 
     try {
-      const response = await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'fetchConversations', data: { userId: user.id } }),
+      const response = await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "fetchConversations",
+          data: { userId: user.id },
+        }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Error fetching conversations');
+        throw new Error("Error fetching conversations");
       }
-      
+
       const data = await response.json();
       setConversations(data);
       if (data.length > 0 && !currentConversationId) {
         setCurrentConversationId(data[0].id);
       }
     } catch (error) {
-      console.error('Error fetching conversations:', error);
+      console.error("Error fetching conversations:", error);
       toast({
         title: "Error",
         description: "Failed to fetch conversations. Please try again.",
@@ -99,20 +101,23 @@ export default function ChatStreamPage() {
   const fetchMessages = async (conversationId: string) => {
     if (!user) return;
     try {
-      const response = await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'fetchMessages', data: { conversationId, userId: user.id } }),
+      const response = await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "fetchMessages",
+          data: { conversationId, userId: user.id },
+        }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Error fetching messages');
+        throw new Error("Error fetching messages");
       }
-      
+
       const data = await response.json();
       setMessages(data);
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error("Error fetching messages:", error);
       toast({
         title: "Error",
         description: "Failed to fetch messages. Please try again.",
@@ -121,22 +126,26 @@ export default function ChatStreamPage() {
     }
   };
 
-  const insertMessage = async (message: Message, conversationId: string, userId: string) => {
+  const insertMessage = async (
+    message: Message,
+    conversationId: string,
+    userId: string
+  ) => {
     try {
-      await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          action: 'insertMessage', 
-          data: { 
-            message, 
-            conversationId, 
-            userId 
-          } 
+      await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "insertMessage",
+          data: {
+            message,
+            conversationId,
+            userId,
+          },
         }),
       });
     } catch (error) {
-      console.error('Error inserting message:', error);
+      console.error("Error inserting message:", error);
       toast({
         title: "Error",
         description: "Failed to save the message. Please try again.",
@@ -151,35 +160,38 @@ export default function ChatStreamPage() {
 
     try {
       await insertMessage(
-        { role: 'user', content: input },
+        { role: "user", content: input },
         currentConversationId,
         user.id
       );
 
       await handleChatSubmit(e);
-
     } catch (error) {
-      console.error('Chat error:', error);
+      console.error("Chat error:", error);
       toast({
         title: "Chat Error",
-        description: "An error occurred while processing your message. Please try again.",
+        description:
+          "An error occurred while processing your message. Please try again.",
         variant: "destructive",
       });
     }
   };
 
-  const updateConversationTimestamp = async (conversationId: string, userId: string) => {
+  const updateConversationTimestamp = async (
+    conversationId: string,
+    userId: string
+  ) => {
     try {
-      await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          action: 'updateConversationTimestamp', 
-          data: { conversationId, userId } 
+      await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "updateConversationTimestamp",
+          data: { conversationId, userId },
         }),
       });
     } catch (error) {
-      console.error('Error updating conversation timestamp:', error);
+      console.error("Error updating conversation timestamp:", error);
     }
   };
 
@@ -191,22 +203,25 @@ export default function ChatStreamPage() {
     if (!user) return;
 
     try {
-      const response = await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'createConversation', data: { title: 'New Conversation', userId: user.id } }),
+      const response = await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "createConversation",
+          data: { title: "New Conversation", userId: user.id },
+        }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Error creating new conversation');
+        throw new Error("Error creating new conversation");
       }
-      
+
       const data = await response.json();
       fetchConversations();
       setCurrentConversationId(data.id);
       setMessages([]);
     } catch (error) {
-      console.error('Error creating new conversation:', error);
+      console.error("Error creating new conversation:", error);
       toast({
         title: "Error",
         description: "Failed to create a new conversation. Please try again.",
@@ -219,21 +234,27 @@ export default function ChatStreamPage() {
     setCurrentConversationId(conversationId);
   };
 
-  const handleRenameConversation = async (conversationId: string, title: string) => {
+  const handleRenameConversation = async (
+    conversationId: string,
+    title: string
+  ) => {
     try {
-      const response = await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'renameConversation', data: { conversationId, title, userId: user?.id } }),
+      const response = await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "renameConversation",
+          data: { conversationId, title, userId: user?.id },
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Error renaming conversation');
+        throw new Error("Error renaming conversation");
       }
 
       fetchConversations();
     } catch (error) {
-      console.error('Error renaming conversation:', error);
+      console.error("Error renaming conversation:", error);
       toast({
         title: "Error",
         description: "Failed to rename the conversation. Please try again.",
@@ -244,14 +265,17 @@ export default function ChatStreamPage() {
 
   const handleDeleteConversation = async (conversationId: string) => {
     try {
-      const response = await fetch('/api/chat-operations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'deleteConversation', data: { conversationId, userId: user?.id } }),
+      const response = await fetch("/api/chat-operations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "deleteConversation",
+          data: { conversationId, userId: user?.id },
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Error deleting conversation');
+        throw new Error("Error deleting conversation");
       }
 
       fetchConversations();
@@ -260,7 +284,7 @@ export default function ChatStreamPage() {
         setMessages([]);
       }
     } catch (error) {
-      console.error('Error deleting conversation:', error);
+      console.error("Error deleting conversation:", error);
       toast({
         title: "Error",
         description: "Failed to delete the conversation. Please try again.",

@@ -1,4 +1,4 @@
-# HealthHub: Health Data Management and AI-Assisted Analysis Platform
+# VitalSense-AI: Health Data Management and AI-Assisted Analysis Platform
 
 This project is a health data management and AI-assisted analysis platform. It combines personal health record management with advanced AI capabilities for data analysis and medical information retrieval.
 
@@ -83,7 +83,7 @@ This project is a health data management and AI-assisted analysis platform. It c
 
    ```bash
    git clone https://github.com/theGateway1/vitalSense-ai-backend.git
-   cd healthhub-backend
+   cd vitalSense-ai-backend
    ```
 
 4. Set up the Python backend:

@@ -2,8 +2,9 @@
 
 This project is a health data management and AI-assisted analysis platform. It combines personal health record management with advanced AI capabilities for data analysis and medical information retrieval.
 
-![HealthHub Landing Page](./public/landing/hm-landing-new.png)
-![HealthHub Assistant](./public/landing/hm-landing-health-assistant-3.png)
+![vitalSense](https://github.com/user-attachments/assets/2aeff7d6-cad6-4e6a-a860-6404f8f7f4d4)
+
+![vitalSense](https://github.com/user-attachments/assets/29a764a7-553d-4073-99ec-7ea00327dfde)
 
 ## Features
 

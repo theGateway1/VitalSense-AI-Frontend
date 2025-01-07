@@ -1,4 +1,4 @@
-# VitalSense-AI: Health Data Management and AI-Assisted Analysis Platform
+# VitalSense-AI
 
 This project is a health data management and AI-assisted analysis platform. It combines personal health record management with advanced AI capabilities for data analysis and medical information retrieval.
 
@@ -43,7 +43,7 @@ This project is a health data management and AI-assisted analysis platform. It c
 - Displays search results with source attribution and relevance ranking
 - Generates comprehensive reports based on search results using OpenAI's GPT-4o
 
-## Techn Stack
+## Tech Stack
 
 - Frontend: Next.js with TypeScript
 - Backend: FastAPI (Python)
@@ -51,105 +51,6 @@ This project is a health data management and AI-assisted analysis platform. It c
 - AI/ML: Langchain, OpenAI GPT models, Cohere embeddings
 - External APIs: Tavily for medical web search
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or later)
-- Python (v3.8 or later)
-- Supabase account
-- OpenAI API key
-- Gemini API key
-- Tavily API key
-- Cohere API key
-- Resend API key
-- Nutritionix API key
-
-### Installation
-
-1. Clone the frontend repository:
-
-   ```bash
-   git clone https://github.com/theGateway1/vitalSense-ai-frontend.git
-   cd vitalSense-ai-frontend
-   ```
-
-2. Install frontend dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Clone the Python backend repository:
-
-   ```bash
-   git clone https://github.com/theGateway1/vitalSense-ai-backend.git
-   cd vitalSense-ai-backend
-   ```
-
-4. Set up the Python backend:
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   pip install -r requirements.txt
-   ```
-
-5. Set up environment variables:
-   Create a `.env` file in the frontend root directory and a `.env` file in the backend directory with the following contents:
-
-   ```bash
-   # Frontend .env (in vitalSense-ai-frontend directory)
-
-   # Supabase
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   SUPABAE_ADMIN=your_supabase_service_role_key
-
-   # FastAPI
-   NEXT_PUBLIC_API_URL=http://localhost:8000
-   API_URL=http://localhost:8000
-
-   # Resend
-   RESEND_API_KEY=your_resend_api_key
-   RESEND_DOMAIN=your_resend_domain
-
-   # Nutritionix API
-   NUTRITIONIX_API_URL=https://trackapi.nutritionix.com/v2
-   NUTRITIONIX_APP_ID=your_nutritionix_app_id
-   NUTRITIONIX_API_KEY=your_nutritionix_api_key
-
-   # DB Credentials
-   NEXT_PUBLIC_DB_USER=<your_db_user>
-   NEXT_PUBLIC_DB_PASSWORD=<your_db_password>
-   NEXT_PUBLIC_DB_HOST=<your_db_host>
-   NEXT_PUBLIC_DB_PORT=<your_db_port>
-   NEXT_PUBLIC_DB_NAME=<your_db_name>
-
-
-   # Backend .env (in vitalSense-ai-backend directory)
-   OPENAI_API_KEY=<your_openai_api_key>
-   LOCAL_LLM_URL=<your_local_llm_url>
-   GOOGLE_API_KEY=<your_google_api_key>
-   COHERE_API_KEY=<your_cohere_api_key>
-   TAVILY_API_KEY=<your_tavily_api_key>
-
-   SUPABASE_URL=<your_supabase_project_url>
-   SUPABASE_KEY=<your_supabase_service_role_key>
-
-   ```
-
-6. Start the development servers:
-
-   ```bash
-   # In the frontend directory
-   cd vitalSense-ai-frontend
-   npm run dev
-
-   # In a new terminal, navigate to the backend directory
-   cd path/to/vitalSense-ai-backend
-   uvicorn main:app --reload
-   ```
 
 ## Usage
 

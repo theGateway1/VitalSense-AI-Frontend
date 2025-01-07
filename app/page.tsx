@@ -10,16 +10,22 @@ import DotPattern from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
 import { Footer } from "@/components/landing/footer";
 import { Header } from "@/app/components/Header";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 // Dynamic imports for both components
 const DynamicHealthAssistant = dynamic(
-  () => import('@/components/landing/health-assistant').then(mod => ({ default: mod.HealthAssistant })),
+  () =>
+    import("@/components/landing/health-assistant").then((mod) => ({
+      default: mod.HealthAssistant,
+    })),
   { ssr: false }
 );
 
 const DynamicDataSourcesVisual = dynamic(
-  () => import('@/components/landing/data-sources-visual').then(mod => ({ default: mod.DataSourcesVisual })),
+  () =>
+    import("@/components/landing/data-sources-visual").then((mod) => ({
+      default: mod.DataSourcesVisual,
+    })),
   { ssr: false }
 );
 
@@ -47,12 +53,11 @@ export default function Home() {
           cy={1}
           cr={1}
           className={cn(
-            "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] ",
+            "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] "
           )}
         />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );
 }
-
